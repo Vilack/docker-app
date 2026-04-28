@@ -12,6 +12,14 @@ pipeline {
                 sh 'cd /var/lib/jenkins/app && docker build -t $IMAGE_NAME .'
             }
         }
+stage('Security Scan') {
+    steps {
+        sh '''
+        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+        aquasec/trivy image vilack21/myapp || true
+        '''
+    }
+}
 
         stage('Login') {
             steps {
